@@ -206,6 +206,25 @@
       }
       tryLoadExcel();
     });
+      async function checkAccess() {
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    if (!isMobile) {
+      document.body.innerHTML = '<div class="text-center mt-32 text-xl">Acceso solo disponible desde dispositivos móviles en Argentina 🇦🇷</div>';
+      return;
+    }
+
+    try {
+      const res = await fetch('https://ipapi.co/json');
+      const data = await res.json();
+      if (data.country !== 'AR') {
+        document.body.innerHTML = '<div class="text-center mt-32 text-xl">Acceso solo disponible para usuarios en Argentina 🇦🇷</div>';
+      }
+    } catch (e) {
+      console.error('Error al verificar IP:', e);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', checkAccess);
   </script>
 </body>
 </html>
