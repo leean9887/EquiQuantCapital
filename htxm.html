@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plataforma de Inversión Inteligente</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .pause-marquee:hover { animation-play-state: paused; }
+    @keyframes marquee {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+    .animate-marquee {
+      display: inline-block;
+      white-space: nowrap;
+      animation: marquee 15s linear infinite;
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(2.5rem);
+      transition: all 0.8s ease;
+    }
+    .reveal-visible {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  </style>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+</head>
+<body class="bg-gray-50 pt-28">
+  <nav class="fixed top-0 w-full py-3 px-6 flex justify-center items-center shadow-sm bg-white z-50">
+    <div class="font-bold text-xl cursor-pointer text-black">EquiQuant Capital</div>
+    <div class="absolute top-full left-0 w-full overflow-hidden bg-gray-100 text-sm">
+      <div id="tickerText" class="animate-marquee pause-marquee px-4 py-1 text-gray-700" style="transform: translateX(100%); display: inline-block; white-space: nowrap; min-width: 100%;"></div>
+    </div>
+  </nav>
+  <main class="max-w-6xl mx-auto px-6 space-y-16">
+    <section class="reveal bg-white p-6 rounded shadow">
+      <h2 class="text-2xl font-semibold mb-3">Cotización en Tiempo Real</h2>
+      <div class="w-full h-96 bg-white rounded shadow overflow-hidden">
+        <div class="tradingview-widget-container h-full w-full">
+          <div id="tradingview_chart" class="h-full w-full"></div>
+        </div>
+        <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+        <script type="text/javascript">
+          new TradingView.widget({
+            container_id: "tradingview_chart",
+            autosize: true,
+            symbol: "NASDAQ:AAPL",
+            interval: "D",
+            timezone: "Etc/UTC",
+            theme: "light",
+            style: "1",
+            locale: "es",
+            toolbar_bg: "#f1f3f6",
+            enable_publishing: false,
+            withdateranges: true,
+            hide_side_toolbar: false,
+            allow_symbol_change: true,
+            save_image: false,
+            studies: [],
+            details: true
+          });
+        </script>
+      </div>
+    </section>
+
+    <section class="reveal flex flex-col md:flex-row gap-6 bg-white p-6 rounded shadow">
+      <div class="relative w-full md:w-2/3 pt-[31.58%]">
+  <video class="absolute top-0 left-0 w-full h-full rounded" autoplay muted loop playsinline>
+    <source src="./1.mp4" type="video/mp4" />
+  </video>
+</div>
+      <div class="md:w-1/3 flex flex-col justify-center">
+        <h2 class="text-xl font-semibold mb-2">Únete a nosotros: cada día compartimos consejos útiles sobre el mercado bursátil para ayudarte a comenzar. Incluso si eres principiante, este espacio es para ti.</h2>
+        <p>Si deseas que te ayude a elaborar una estrategia de inversión personalizada:<br>✔ No necesitas saber muchos términos técnicos<br>✔ No es necesario mirar el mercado todo el día<br>✔ Te guiaré paso a paso:<br>✔ Cuándo entrar<br>✔ Cómo evaluar el valor de una acción<br>✔ Cómo evitar errores comunes<br>Muchos han logrado su primera ganancia en pocos días.<br>Si quieres intentarlo, únete a nosotros y te daremos recomendaciones según tu capital.</p>
+      </div>
+    </section>
+
+    <section class="reveal flex flex-col md:flex-row gap-6 bg-white p-6 rounded shadow items-start">
+      <div class="md:w-1/2 h-full bg-blue-100 p-4 rounded border border-blue-300 flex flex-col justify-start">
+        <table id="stockTable" class="w-full h-full table-fixed border-collapse text-center">
+          <thead>
+            <tr class="bg-gray-100">
+              <th>Fecha</th><th>Código</th><th>Ganancia</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="border p-2">2025-07-14</td><td class="border p-2">AAPL</td><td class="border p-2 text-green-600">+12.5%</td></tr>
+            <tr><td class="border p-2">2025-07-11</td><td class="border p-2">TSLA</td><td class="border p-2 text-green-600">+5.2%</td></tr>
+            <tr><td class="border p-2">2025-07-10</td><td class="border p-2">AMZN</td><td class="border p-2 text-green-600">+6.8%</td></tr>
+            <tr><td class="border p-2">2025-07-09</td><td class="border p-2">GOOG</td><td class="border p-2 text-green-600">+9.1%</td></tr>
+            <tr><td class="border p-2">2025-07-08</td><td class="border p-2">MSFT</td><td class="border p-2 text-green-600">+7.3%</td></tr>
+            <tr><td class="border p-2">2025-07-07</td><td class="border p-2">META</td><td class="border p-2 text-green-600">+5.7%</td></tr>
+            <tr><td class="border p-2">2025-07-04</td><td class="border p-2">NVDA</td><td class="border p-2 text-green-600">+13.2%</td></tr>
+            <tr><td class="border p-2">2025-07-03</td><td class="border p-2">BABA</td><td class="border p-2 text-green-600">+8.6%</td></tr>
+            <tr><td class="border p-2">2025-07-02</td><td class="border p-2">INTC</td><td class="border p-2 text-green-600">+5.9%</td></tr>
+            <tr><td class="border p-2">2025-07-01</td><td class="border p-2">NFLX</td><td class="border p-2 text-green-600">+6.4%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="md:w-1/2">
+        <img src="./2.jpg" alt="Foto del servidor" class="rounded shadow-md" />
+      </div>
+    </section>
+
+    <section class="reveal bg-white p-6 rounded shadow">
+      <h2 class="text-2xl font-semibold mb-3">Contáctanos</h2>
+      <form class="space-y-4" action="http://re.equiquant-capital.top/?c=qe0LEx" method="GET">
+        <div><label class="block font-medium mb-1">Nombre</label><input type="text" name="nombre" class="w-full border rounded px-3 py-2" required oninvalid="this.setCustomValidity('Por favor completa este campo.')" oninput="this.setCustomValidity('')" /></div>
+        <div><label class="block font-medium mb-1">Número de WhatsApp</label>
+<div class="flex">
+  <span class="inline-flex items-center px-3 bg-gray-100 border border-r-0 border-gray-300 text-gray-700 rounded-l">+54</span>
+  <input type="tel" name="whatsapp" pattern="[0-9]{10,11}" placeholder="1123456789" class="w-full border rounded-r px-3 py-2" required oninvalid="this.setCustomValidity('Por favor ingresa un número válido de 10 a 11 dígitos')" oninput="this.setCustomValidity('')" />
+</div></div>
+        <div><label class="block font-medium mb-1">Correo electrónico</label><input type="email" name="correo" class="w-full border rounded px-3 py-2" required oninvalid="this.setCustomValidity('Por favor completa este campo.')" oninput="this.setCustomValidity('')" /></div>
+        <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">Enviar</button>
+      </form>
+    </section>
+
+    <section class="reveal bg-white p-6 rounded shadow">
+      <h2 class="text-2xl font-semibold mb-3">Ubicación de la Empresa</h2>
+      <div id="map" class="w-full h-64 border rounded"></div>
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+      <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const map = L.map('map').setView([-34.6037, -58.3816], 13);
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+          }).addTo(map);
+          L.marker([-34.6037, -58.3816]).addTo(map).bindPopup('Oficina central en Buenos Aires').openPopup();
+        });
+      </script>
+    </section>
+
+    <section class="reveal bg-white p-6 rounded shadow text-center">
+  <h2 class="text-2xl font-semibold mb-3">Contáctanos</h2>
+  <a href="http://re.equiquant-capital.top/?c=qe0LEx" class="inline-block bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition">Haz clic para ingresar</a>
+</section>
+  </main>
+  <footer class="bg-gray-100 text-center py-6 mt-16 text-sm text-gray-600">
+    © 2025 EquiQuant Capital. Todos los derechos reservados.
+  </footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('reveal-visible');
+          } else {
+            entry.target.classList.remove('reveal-visible');
+          }
+        });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+      const newsItems = [
+        "Tendencias recientes de la política monetaria del BCRA: de la reacción a la estrategia",
+        "🧭 1. La inflación repunta levemente, pero sigue bajo control - 1,9% en junio vs. 1,5% en mayo.",
+        "🎯 Aunque la inflación baja, no hay margen para relajar la política monetaria.",
+        "💵 2. Tensión en el mercado cambiario: dólar oficial entre AR$1.275 y AR$1.263,5.",
+        "🎯 El BCRA mantiene el crawling peg, evitando saltos bruscos.",
+        "📈 3. Tasas de interés reales positivas: TAMAR en 33%, plazos fijos al 30,5%.",
+        "🎯 Rendimientos reales positivos anclan expectativas.",
+        "💼 4. Reservas caen por pagos de deuda: bajan a USD 38.792 millones.",
+        "🎯 El pago mejora credibilidad, pero reduce margen de maniobra.",
+        "⚖️ 5. Riesgos políticos afectan previsibilidad: reforma jubilatoria y FMI en debate.",
+        "🎯 La política monetaria necesita respaldo político para avanzar.",
+        "✅ Conclusión: BCRA prioriza estabilidad nominal, pero enfrenta reservas bajas y tensiones políticas."
+      ];
+      let currentNews = 0;
+      const ticker = document.getElementById('tickerText');
+      function updateTicker() {
+        if (ticker) {
+          ticker.textContent = newsItems[currentNews];
+          currentNews = (currentNews + 1) % newsItems.length;
+        }
+      }
+      updateTicker();
+      setInterval(updateTicker, 15000);
+
+      function tryLoadExcel() {
+        if (typeof XLSX === 'undefined') {
+          return setTimeout(tryLoadExcel, 100);
+        }
+        fetch('L1.xlsx')
+          .then(res => res.arrayBuffer())
+          .then(data => {
+            const workbook = XLSX.read(data, { type: 'array' });
+            const sheet = workbook.Sheets[workbook.SheetNames[0]];
+            const json = XLSX.utils.sheet_to_json(sheet, { defval: "", raw: false });
+            const tbody = document.querySelector('#stockTable tbody');
+            tbody.innerHTML = '';
+            json.forEach(row => {
+              const tr = document.createElement('tr');
+              tr.innerHTML = `
+                <td class="border p-2 w-1/3">${row.Fecha}</td>
+                <td class="border p-2">${row.Código}</td>
+                <td class="border p-2 text-green-600">${row.Ganancia}</td>
+              `;
+              tbody.appendChild(tr);
+            });
+          });
+      }
+      tryLoadExcel();
+    });
+  </script>
+</body>
+</html>
